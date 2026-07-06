@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMETS — Intake & Connection Form</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --charcoal:#1C1B18;
+    --ivory:#F1EDE3;
+    --purple:#3B1E5E;
+    --purple-deep:#2A1544;
+    --gold:#C6952F;
+    --sage:#7A8B6F;
+    --line: rgba(28,27,24,0.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Inter',sans-serif; background:var(--ivory); color:var(--charcoal);
+    line-height:1.5;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif; font-weight:600;}
+
+  .header{
+    background:var(--purple-deep); color:var(--ivory);
+    padding:44px 24px 40px; text-align:center;
+  }
+  .header .brand{font-family:'Fraunces',serif; font-size:1.6rem; font-weight:700; letter-spacing:0.02em; color:var(--ivory);}
+  .header .sub{
+    font-size:0.75rem; text-transform:uppercase; letter-spacing:0.14em;
+    color:var(--gold); margin-top:6px;
+  }
+  .header p{
+    max-width:520px; margin:20px auto 0; color:rgba(241,237,227,0.75); font-size:0.92rem;
+  }
+
+  .wrap{max-width:680px; margin:0 auto; padding:40px 20px 100px;}
+
+  .progress-bar{
+    position:sticky; top:0; background:var(--ivory); z-index:10;
+    padding:14px 0; border-bottom:1px solid var(--line); margin-bottom:8px;
+  }
+  .progress-track{
+    height:6px; background:rgba(28,27,24,0.08); border-radius:10px; overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; background:var(--gold); width:0%; transition:width 0.25s ease; border-radius:10px;
+  }
+  .progress-label{
+    font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:rgba(28,27,24,0.55);
+    margin-top:8px; text-transform:uppercase; letter-spacing:0.08em;
+  }
+
+  .section-card{
+    background:#fff; border:1px solid var(--line); border-radius:12px;
+    padding:32px 28px; margin-top:28px;
+  }
+  .section-card h2{
+    font-size:1.2rem; display:flex; align-items:center; gap:12px; margin-bottom:6px;
+  }
+  .section-num{
+    width:30px; height:30px; border-radius:50%; background:var(--purple-deep); color:var(--gold);
+    display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace;
+    font-size:0.8rem; flex-shrink:0;
+  }
+  .section-card > p.hint{color:rgba(28,27,24,0.55); font-size:0.85rem; margin-bottom:20px; margin-left:42px;}
+
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px; color:var(--charcoal);
+  }
+  .field label .req{color:var(--purple); font-weight:700;}
+  .field label .opt{font-weight:400; color:rgba(28,27,24,0.4); font-size:0.78rem;}
+  .field input[type=text], .field input[type=tel], .field input[type=email], .field textarea, .field select{
+    width:100%; padding:11px 14px; border:1.5px solid var(--line); border-radius:7px;
+    font-family:'Inter',sans-serif; font-size:0.92rem; background:var(--ivory);
+    transition: border-color 0.15s ease;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{
+    outline:none; border-color:var(--gold); background:#fff;
+  }
+  .field textarea{resize:vertical; min-height:80px;}
+
+  .radio-group{display:flex; flex-direction:column; gap:8px; margin-top:4px;}
+  .radio-chip{
+    display:flex; align-items:center; gap:10px; padding:11px 14px; border:1.5px solid var(--line);
+    border-radius:7px; font-size:0.87rem; cursor:pointer; background:var(--ivory);
+  }
+  .radio-chip input{accent-color:var(--gold); width:15px; height:15px; flex-shrink:0;}
+  .radio-chip.checked{border-color:var(--gold); background:rgba(198,149,47,0.08);}
+
+  .yn-group{display:flex; gap:10px;}
+  .yn-chip{
+    flex:1; text-align:center; padding:11px; border:1.5px solid var(--line); border-radius:7px;
+    font-size:0.87rem; font-weight:600; cursor:pointer; background:var(--ivory);
+  }
+  .yn-chip input{display:none;}
+  .yn-chip.checked{border-color:var(--gold); background:rgba(198,149,47,0.1); color:var(--purple-deep);}
+
+  .amenity-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px; margin-top:6px;
+  }
+  .amenity-chip{
+    display:flex; align-items:center; gap:8px; padding:9px 12px; border:1.5px solid var(--line);
+    border-radius:7px; font-size:0.84rem; cursor:pointer; background:var(--ivory);
+  }
+  .amenity-chip input{accent-color:var(--gold); width:15px; height:15px;}
+  .amenity-chip.checked{border-color:var(--gold); background:rgba(198,149,47,0.08);}
+
+  .consent-block{display:flex; flex-direction:column; gap:12px;}
+  .consent-item{display:flex; align-items:flex-start; gap:10px; font-size:0.85rem; color:var(--charcoal);}
+  .consent-item input{accent-color:var(--gold); width:16px; height:16px; margin-top:2px; flex-shrink:0;}
+
+  .conditional-block{display:none; margin-top:16px; padding-top:4px;}
+  .conditional-block.show{display:block;}
+
+  .sticky-footer{
+    position:sticky; bottom:0; background:var(--ivory); border-top:1px solid var(--line);
+    padding:18px 20px; margin-top:36px; display:flex; gap:12px; flex-wrap:wrap;
+  }
+  .btn{
+    flex:1; min-width:180px; padding:15px 20px; border-radius:8px; font-weight:600;
+    font-size:0.94rem; cursor:pointer; border:none; font-family:'Inter',sans-serif;
+    transition:transform 0.12s ease;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{background:var(--gold); color:var(--purple-deep);}
+  .btn-primary:disabled{opacity:0.45; cursor:not-allowed;}
+  .btn-secondary{background:var(--purple-deep); color:var(--ivory);}
+
+  .output-box{
+    display:none; background:var(--purple-deep); color:var(--ivory); border-radius:10px;
+    padding:24px; margin-top:24px; font-family:'JetBrains Mono',monospace; font-size:0.8rem;
+    white-space:pre-wrap; line-height:1.7; max-height:400px; overflow-y:auto;
+  }
+  .output-box.show{display:block;}
+
+  .confirmation{
+    display:none; background:#fff; border:1.5px solid var(--gold); border-radius:12px;
+    padding:32px 28px; margin-top:24px; text-align:center;
+  }
+  .confirmation.show{display:block;}
+  .confirmation h3{color:var(--purple-deep); margin-bottom:10px;}
+  .confirmation p{color:rgba(28,27,24,0.65); font-size:0.9rem;}
+  .confirmation .id-tag{
+    display:inline-block; margin-top:14px; font-family:'JetBrains Mono',monospace;
+    background:var(--ivory); border:1px solid var(--line); padding:6px 14px; border-radius:6px;
+    font-size:0.8rem; color:var(--purple-deep);
+  }
+
+  .copied-flag{
+    display:none; background:var(--sage); color:#fff; padding:10px 16px; border-radius:7px;
+    text-align:center; font-size:0.85rem; font-weight:600; margin-top:12px;
+  }
+  .copied-flag.show{display:block;}
+
+  @media (max-width:600px){
+    .section-card{padding:24px 18px;}
+    .section-card > p.hint{margin-left:0; margin-top:8px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">GAMETS</div>
+  <div class="sub">Intake &amp; Connection Form</div>
+  <p>This form is used to connect individuals, institutions, and academic leaders to the GAMETS coordination network. It helps us understand your role, affiliation, and how you intend to engage with the platform.</p>
+</div>
+
+<div class="progress-bar">
+  <div class="wrap" style="padding:0;">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">0% complete</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- SECTION 1: Basic Identity -->
+  <div class="section-card">
+    <h2><span class="section-num">01</span> Basic Identity</h2>
+    <p class="hint">Your identity anchor — nothing more.</p>
+
+    <div class="field">
+      <label>Full Name <span class="req">*</span></label>
+      <input type="text" data-field="full_name" data-required="true">
+    </div>
+    <div class="field">
+      <label>Email Address <span class="req">*</span></label>
+      <input type="email" data-field="email" data-required="true">
+    </div>
+    <div class="field">
+      <label>WhatsApp Number <span class="req">*</span></label>
+      <input type="tel" data-field="whatsapp" data-required="true" placeholder="+27 ...">
+    </div>
+    <div class="field">
+      <label>Country / Region <span class="req">*</span></label>
+      <input type="text" data-field="country" data-required="true">
+    </div>
+    <div class="field">
+      <label>Institution / Organization Name <span class="opt">(optional)</span></label>
+      <input type="text" data-field="org_name">
+    </div>
+  </div>
+
+  <!-- SECTION 2: Your Role -->
+  <div class="section-card">
+    <h2><span class="section-num">02</span> Your Role</h2>
+    <p class="hint">Select the one that best describes you.</p>
+
+    <div class="radio-group" id="roleGroup">
+      <label class="radio-chip"><input type="radio" name="role" value="Student"> Student</label>
+      <label class="radio-chip"><input type="radio" name="role" value="Mentor / Lecturer"> Mentor / Lecturer</label>
+      <label class="radio-chip"><input type="radio" name="role" value="Academic Administrator"> Academic Administrator</label>
+      <label class="radio-chip"><input type="radio" name="role" value="Support Staff"> Support Staff</label>
+      <label class="radio-chip"><input type="radio" name="role" value="Partner Organization"> Partner Organization</label>
+      <label class="radio-chip"><input type="radio" name="role" value="Other"> Other</label>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Affiliation -->
+  <div class="section-card">
+    <h2><span class="section-num">03</span> Affiliation</h2>
+    <p class="hint">Are you currently part of an institution?</p>
+
+    <div class="field">
+      <div class="yn-group" id="affiliationYN">
+        <label class="yn-chip"><input type="radio" name="has_church" value="Yes">Yes</label>
+        <label class="yn-chip"><input type="radio" name="has_church" value="No">No</label>
+      </div>
+    </div>
+
+    <div class="conditional-block" id="churchDetails">
+      <div class="field">
+        <label>Institution Name</label>
+        <input type="text" data-field="church_name">
+      </div>
+      <div class="field">
+        <label>Affiliation Body <span class="opt">(optional)</span></label>
+        <input type="text" data-field="denomination">
+      </div>
+      <div class="field">
+        <label>Location (City / Region)</label>
+        <input type="text" data-field="church_location">
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: Purpose of Connection -->
+  <div class="section-card">
+    <h2><span class="section-num">04</span> Purpose of Connection</h2>
+    <p class="hint">Select all that apply.</p>
+
+    <div class="amenity-grid" id="purposeGrid"></div>
+  </div>
+
+  <!-- SECTION 5: Optional Message -->
+  <div class="section-card">
+    <h2><span class="section-num">05</span> Anything Else</h2>
+    <p class="hint">Tell us anything you'd like us to know about your ministry, needs, or purpose.</p>
+
+    <div class="field">
+      <textarea data-field="message" style="min-height:100px;"></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 6: Consent -->
+  <div class="section-card">
+    <h2><span class="section-num">06</span> Consent</h2>
+    <p class="hint">Required to submit.</p>
+
+    <div class="consent-block">
+      <label class="consent-item">
+        <input type="checkbox" data-consent="accurate" data-required="true">
+        I confirm that the information provided is accurate
+      </label>
+      <label class="consent-item">
+        <input type="checkbox" data-consent="contact" data-required="true">
+        I agree to be contacted via email or WhatsApp regarding GAMETS updates
+      </label>
+      <label class="consent-item">
+        <input type="checkbox" data-consent="data" data-required="true">
+        I accept the platform's data handling policy
+      </label>
+    </div>
+  </div>
+
+  <div class="sticky-footer">
+    <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()" disabled>Submit Request</button>
+    <button class="btn btn-secondary" onclick="copySummary()">Copy Summary</button>
+  </div>
+
+  <div class="copied-flag" id="copiedFlag">✓ Copied</div>
+  <div class="output-box" id="outputBox"></div>
+
+  <div class="confirmation" id="confirmationBox">
+    <h3>Thank you. Your request has been received.</h3>
+    <p>A GAMETS representative or system will review your submission and contact you if required.</p>
+    <div class="id-tag" id="submissionId">GAMETS-0001</div>
+  </div>
+
+</div>
+
+<script>
+// NOTE: Static UI only. No backend wired yet.
+// "Submit Request" validates required fields + consent, generates a local
+// reference ID, and shows the confirmation message. It does NOT send data
+// anywhere. Wire this to email/WhatsApp/DB automation when ready.
+
+const purposeList = [
+  "Coursework Access","Leadership Development / Training","Institutional Administration Tools",
+  "Academic Networking","Academic Conferences","Contributions","General Interest"
+];
+const purposeGrid = document.getElementById('purposeGrid');
+purposeList.forEach((p)=>{
+  const label = document.createElement('label');
+  label.className = 'amenity-chip';
+  label.innerHTML = `<input type="checkbox" data-purpose="${p}"> ${p}`;
+  purposeGrid.appendChild(label);
+});
+purposeGrid.addEventListener('change', (e)=>{
+  if(e.target.checked){ e.target.closest('.amenity-chip').classList.add('checked'); }
+  else{ e.target.closest('.amenity-chip').classList.remove('checked'); }
+  updateProgress();
+});
+
+document.querySelectorAll('input[name="role"]').forEach(radio=>{
+  radio.addEventListener('change', ()=>{
+    document.querySelectorAll('#roleGroup .radio-chip').forEach(chip=>chip.classList.remove('checked'));
+    radio.closest('.radio-chip').classList.add('checked');
+    updateProgress();
+  });
+});
+
+document.querySelectorAll('input[name="has_church"]').forEach(radio=>{
+  radio.addEventListener('change', ()=>{
+    document.querySelectorAll('#affiliationYN .yn-chip').forEach(chip=>chip.classList.remove('checked'));
+    radio.closest('.yn-chip').classList.add('checked');
+    const details = document.getElementById('churchDetails');
+    if(radio.value === 'Yes'){
+      details.classList.add('show');
+    } else {
+      details.classList.remove('show');
+    }
+    updateProgress();
+  });
+});
+
+function updateProgress(){
+  let filled = 0, total = 0;
+
+  document.querySelectorAll('[data-field]').forEach(el=>{
+    // skip conditional church fields if "No" selected or unanswered
+    const inConditional = el.closest('#churchDetails');
+    if(inConditional && !document.getElementById('churchDetails').classList.contains('show')) return;
+    total++;
+    if(el.value && el.value.trim() !== '') filled++;
+  });
+
+  total += 1; // role
+  if(document.querySelector('input[name="role"]:checked')) filled++;
+
+  total += 1; // affiliation yes/no
+  if(document.querySelector('input[name="has_church"]:checked')) filled++;
+
+  total += 1; // purpose block
+  if([...document.querySelectorAll('[data-purpose]')].some(c=>c.checked)) filled++;
+
+  total += 3; // consents
+  document.querySelectorAll('[data-consent]').forEach(c=>{ if(c.checked) filled++; });
+
+  const pct = total ? Math.round((filled/total)*100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = pct + '% complete';
+
+  checkSubmitEnabled();
+}
+
+function checkSubmitEnabled(){
+  const requiredFields = document.querySelectorAll('[data-field][data-required="true"]');
+  const requiredFilled = [...requiredFields].every(el => el.value && el.value.trim() !== '');
+  const roleSelected = !!document.querySelector('input[name="role"]:checked');
+  const consents = document.querySelectorAll('[data-consent]');
+  const allConsented = [...consents].every(c => c.checked);
+
+  document.getElementById('submitBtn').disabled = !(requiredFilled && roleSelected && allConsented);
+}
+
+document.querySelectorAll('[data-field], [data-consent]').forEach(el=>{
+  el.addEventListener('input', updateProgress);
+  el.addEventListener('change', updateProgress);
+});
+
+function buildSummary(){
+  const get = (name) => {
+    const el = document.querySelector(`[data-field="${name}"]`);
+    return el && el.value.trim() ? el.value.trim() : '—';
+  };
+  const role = document.querySelector('input[name="role"]:checked');
+  const hasChurch = document.querySelector('input[name="has_church"]:checked');
+
+  let purposes = [];
+  document.querySelectorAll('[data-purpose]').forEach(c=>{
+    if(c.checked) purposes.push(c.dataset.purpose);
+  });
+
+  return `GAMETS — INTAKE & CONNECTION FORM SUBMISSION
+Generated: ${new Date().toLocaleDateString()}
+
+01 — BASIC IDENTITY
+Full Name: ${get('full_name')}
+Email: ${get('email')}
+WhatsApp: ${get('whatsapp')}
+Country/Region: ${get('country')}
+Institution/Organization: ${get('org_name')}
+
+02 — ROLE
+${role ? role.value : '—'}
+
+03 — AFFILIATION
+Part of an institution: ${hasChurch ? hasChurch.value : '—'}
+Institution Name: ${get('church_name')}
+Denomination: ${get('denomination')}
+Location: ${get('church_location')}
+
+04 — PURPOSE OF CONNECTION
+${purposes.length ? purposes.join(', ') : '—'}
+
+05 — MESSAGE
+${get('message')}
+
+06 — CONSENT
+Confirmed accurate: ${document.querySelector('[data-consent="accurate"]').checked ? 'Yes' : 'No'}
+Agreed to contact: ${document.querySelector('[data-consent="contact"]').checked ? 'Yes' : 'No'}
+Accepted data policy: ${document.querySelector('[data-consent="data"]').checked ? 'Yes' : 'No'}
+`;
+}
+
+function copySummary(){
+  const box = document.getElementById('outputBox');
+  box.textContent = buildSummary();
+  box.classList.add('show');
+  navigator.clipboard.writeText(box.textContent).then(()=>{
+    const flag = document.getElementById('copiedFlag');
+    flag.classList.add('show');
+    setTimeout(()=>flag.classList.remove('show'), 3000);
+  });
+}
+
+function handleSubmit(){
+  if(document.getElementById('submitBtn').disabled) return;
+
+  const refId = 'GAMETS-' + String(Math.floor(1000 + Math.random()*9000));
+  document.getElementById('submissionId').textContent = refId;
+  document.getElementById('confirmationBox').classList.add('show');
+  document.getElementById('confirmationBox').scrollIntoView({behavior:'smooth', block:'center'});
+
+  // Reference log only — no backend call. Replace with real submission logic.
+  console.log('GAMETS intake submission (static, not sent anywhere):', buildSummary());
+}
+
+updateProgress();
+</script>
+
+</body>
+</html>
