@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAMETS — Platform Build Intake Form</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root{
+    --charcoal:#1C1B18;
+    --ivory:#F1EDE3;
+    --purple:#3B1E5E;
+    --purple-deep:#2A1544;
+    --gold:#C6952F;
+    --red:#B33A2E;
+    --sage:#7A8B6F;
+    --line: rgba(28,27,24,0.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Inter',sans-serif; background:var(--ivory); color:var(--charcoal);
+    line-height:1.5;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif; font-weight:600;}
+
+  .header{
+    background:var(--purple-deep); color:var(--ivory);
+    padding:44px 24px 40px; text-align:center;
+  }
+  .header .brand{font-family:'Fraunces',serif; font-size:1.6rem; font-weight:700; letter-spacing:0.02em; color:var(--ivory);}
+  .header .sub{
+    font-size:0.75rem; text-transform:uppercase; letter-spacing:0.14em;
+    color:var(--gold); margin-top:6px;
+  }
+  .header p{
+    max-width:560px; margin:20px auto 0; color:rgba(241,237,227,0.72); font-size:0.92rem;
+  }
+
+  .wrap{max-width:720px; margin:0 auto; padding:40px 20px 100px;}
+
+  .progress-bar{
+    position:sticky; top:0; background:var(--ivory); z-index:10;
+    padding:14px 0; border-bottom:1px solid var(--line); margin-bottom:8px;
+  }
+  .progress-track{
+    height:6px; background:rgba(28,27,24,0.08); border-radius:10px; overflow:hidden;
+  }
+  .progress-fill{
+    height:100%; background:var(--gold); width:0%; transition:width 0.25s ease; border-radius:10px;
+  }
+  .progress-label{
+    font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:rgba(28,27,24,0.55);
+    margin-top:8px; text-transform:uppercase; letter-spacing:0.08em;
+  }
+
+  .section-card{
+    background:#fff; border:1px solid var(--line); border-radius:12px;
+    padding:32px 28px; margin-top:28px;
+  }
+  .section-card h2{
+    font-size:1.35rem; display:flex; align-items:center; gap:12px; margin-bottom:6px;
+  }
+  .section-num{
+    width:30px; height:30px; border-radius:50%; background:var(--purple-deep); color:var(--gold);
+    display:flex; align-items:center; justify-content:center; font-family:'JetBrains Mono',monospace;
+    font-size:0.8rem; flex-shrink:0;
+  }
+  .section-card > p.hint{color:rgba(28,27,24,0.55); font-size:0.86rem; margin-bottom:22px; margin-left:42px;}
+
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block; font-size:0.85rem; font-weight:600; margin-bottom:6px; color:var(--charcoal);
+  }
+  .field label .opt{font-weight:400; color:rgba(28,27,24,0.4); font-size:0.78rem;}
+  .field input[type=text], .field input[type=tel], .field input[type=email], .field textarea, .field select{
+    width:100%; padding:11px 14px; border:1.5px solid var(--line); border-radius:7px;
+    font-family:'Inter',sans-serif; font-size:0.92rem; background:var(--ivory);
+    transition: border-color 0.15s ease;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{
+    outline:none; border-color:var(--gold); background:#fff;
+  }
+  .field textarea{resize:vertical; min-height:70px;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+
+  .radio-group{display:flex; flex-direction:column; gap:8px; margin-top:4px;}
+  .radio-chip{
+    display:flex; align-items:flex-start; gap:10px; padding:12px 14px; border:1.5px solid var(--line);
+    border-radius:7px; font-size:0.87rem; cursor:pointer; background:var(--ivory);
+  }
+  .radio-chip input{accent-color:var(--gold); width:15px; height:15px; margin-top:2px; flex-shrink:0;}
+  .radio-chip.checked{border-color:var(--gold); background:rgba(198,149,47,0.08);}
+  .radio-chip .chip-text strong{display:block; font-weight:600;}
+  .radio-chip .chip-text span{color:rgba(28,27,24,0.55); font-size:0.8rem;}
+
+  .amenity-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; margin-top:6px;
+  }
+  .amenity-chip{
+    display:flex; align-items:center; gap:8px; padding:9px 12px; border:1.5px solid var(--line);
+    border-radius:7px; font-size:0.84rem; cursor:pointer; background:var(--ivory);
+  }
+  .amenity-chip input{accent-color:var(--gold); width:15px; height:15px;}
+  .amenity-chip.checked{border-color:var(--gold); background:rgba(198,149,47,0.08);}
+
+  .sticky-footer{
+    position:sticky; bottom:0; background:var(--ivory); border-top:1px solid var(--line);
+    padding:18px 20px; margin-top:36px; display:flex; gap:12px; flex-wrap:wrap;
+  }
+  .btn{
+    flex:1; min-width:180px; padding:15px 20px; border-radius:8px; font-weight:600;
+    font-size:0.94rem; cursor:pointer; border:none; font-family:'Inter',sans-serif;
+    transition:transform 0.12s ease;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{background:var(--gold); color:var(--purple-deep);}
+  .btn-secondary{background:var(--purple-deep); color:var(--ivory);}
+
+  .output-box{
+    display:none; background:var(--purple-deep); color:var(--ivory); border-radius:10px;
+    padding:24px; margin-top:24px; font-family:'JetBrains Mono',monospace; font-size:0.8rem;
+    white-space:pre-wrap; line-height:1.7; max-height:400px; overflow-y:auto;
+  }
+  .output-box.show{display:block;}
+  .copied-flag{
+    display:none; background:var(--sage); color:#fff; padding:10px 16px; border-radius:7px;
+    text-align:center; font-size:0.85rem; font-weight:600; margin-top:12px;
+  }
+  .copied-flag.show{display:block;}
+
+  @media (max-width:600px){
+    .field-row{grid-template-columns:1fr;}
+    .section-card{padding:24px 18px;}
+    .section-card > p.hint{margin-left:0; margin-top:8px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">GAMETS</div>
+  <div class="sub">Platform Build Intake Form</div>
+  <p>Global African Methodist Episcopal Theological Seminary — we need the details below to finalize the Moodle-based LMS build, AME platform integration, and institutional setup. Some fields may already be decided — please confirm, correct, and complete the rest.</p>
+</div>
+
+<div class="progress-bar">
+  <div class="wrap" style="padding:0;">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">0% complete</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- SECTION 1: Institutional Identity -->
+  <div class="section-card">
+    <h2><span class="section-num">01</span> Institutional Identity</h2>
+    <p class="hint">Confirms the seminary's official name, leadership, and domain — this becomes the foundation for logins, certificates, and emails.</p>
+
+    <div class="field">
+      <label>Official institution name</label>
+      <input type="text" data-field="institution_name" value="Global African Methodist Episcopal Theological Seminary (GAMETS)">
+    </div>
+    <div class="field">
+      <label>Presiding leadership / Bishop</label>
+      <input type="text" data-field="leadership_name" value="Bishop Kawimbe">
+    </div>
+    <div class="field">
+      <label>Primary institutional domain</label>
+      <input type="text" data-field="domain_name" placeholder="e.g. gamets.org" value="gamets.org">
+    </div>
+    <div class="field">
+      <label>Institutional motto <span class="opt">(optional)</span></label>
+      <input type="text" data-field="motto" value="Equipping Kingdom People">
+    </div>
+  </div>
+
+  <!-- SECTION 2: System Architecture -->
+  <div class="section-card">
+    <h2><span class="section-num">02</span> System Architecture</h2>
+    <p class="hint">Confirms the locked architecture decision from prior discussion — Moodle as core LMS engine, AME platform for branding/front-end.</p>
+
+    <div class="field">
+      <label>Confirmed LMS approach</label>
+      <div class="radio-group" id="lmsApproachGroup">
+        <label class="radio-chip">
+          <input type="radio" name="lms_approach" value="Moodle as core LMS (confirmed)" checked>
+          <span class="chip-text"><strong>Moodle as core LMS</strong><span>Confirmed by Bishop — single source of truth for classrooms, gradebook, forums, attendance, assignments.</span></span>
+        </label>
+        <label class="radio-chip">
+          <input type="radio" name="lms_approach" value="Hybrid (Moodle + custom parallel system)">
+          <span class="chip-text"><strong>Hybrid (Moodle + custom)</strong><span>Higher cost, complexity, and maintenance overhead — not the currently agreed direction.</span></span>
+        </label>
+      </div>
+    </div>
+    <div class="field">
+      <label>AME platform's role going forward</label>
+      <textarea data-field="ame_platform_role" placeholder="e.g. Website branding, public pages, registration/login front door, church/admin workflows, dashboard, certificates">Website branding and public pages; registration/login front door; church and admin-specific workflows; custom AME dashboard, reports, certificates, messaging; mobile app branding.</textarea>
+    </div>
+    <div class="field">
+      <label>Moodle's role going forward</label>
+      <textarea data-field="moodle_role" placeholder="e.g. Online classrooms, video lectures, gradebook...">Online classrooms (BigBlueButton), video lectures, assignments, quizzes/exams, gradebook, discussion forums, attendance tracking, mobile learning, multilingual course content.</textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 3: Domain & Email Setup -->
+  <div class="section-card">
+    <h2><span class="section-num">03</span> Domain &amp; Institutional Email</h2>
+    <p class="hint">Needed to avoid personal-email dependency and give the platform a clean institutional identity.</p>
+
+    <div class="field">
+      <label>Is the domain registered yet?</label>
+      <select data-field="domain_registered">
+        <option value="">Select...</option>
+        <option value="Yes, registered">Yes, registered</option>
+        <option value="No, needs registration">No, needs registration</option>
+        <option value="In progress">In progress</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Required institutional email addresses</label>
+      <textarea data-field="institutional_emails" placeholder="e.g. admin@..., bishop@..., support@..., noreply@...">admin@[domain], bishop@[domain], support@[domain], noreply@[domain]</textarea>
+    </div>
+    <div class="field">
+      <label>Who holds domain registrar / DNS access?</label>
+      <input type="text" data-field="dns_access" placeholder="Name / role of person with registrar login">
+    </div>
+  </div>
+
+  <!-- SECTION 4: Moodle Account & Access -->
+  <div class="section-card">
+    <h2><span class="section-num">04</span> Moodle Account &amp; Access</h2>
+    <p class="hint">Required to begin instance setup, admin configuration, and course structure.</p>
+
+    <div class="field">
+      <label>Moodle hosting preference</label>
+      <select data-field="moodle_hosting">
+        <option value="">Select...</option>
+        <option value="Moodle Cloud">MoodleCloud (managed)</option>
+        <option value="Self-hosted / VPS">Self-hosted / VPS</option>
+        <option value="Undecided">Undecided — need recommendation</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Admin account holder (name + email)</label>
+      <input type="text" data-field="moodle_admin" placeholder="e.g. Bishop Kawimbe, bishop@gamets.org">
+    </div>
+    <div class="field">
+      <label>Expected initial user roles</label>
+      <div class="amenity-grid" id="roleGrid"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Course & Curriculum Structure -->
+  <div class="section-card">
+    <h2><span class="section-num">05</span> Course &amp; Curriculum Structure</h2>
+    <p class="hint">Confirms what needs to be built into Moodle first — helps sequence the milestone plan.</p>
+
+    <div class="field">
+      <label>Initial programs / courses to launch with</label>
+      <textarea data-field="initial_courses" placeholder="e.g. Foundations of Ministry, Biblical Studies I, Church Leadership..."></textarea>
+    </div>
+    <div class="field">
+      <label>Certification / accreditation requirements</label>
+      <textarea data-field="certification_reqs" placeholder="e.g. Certificate on course completion, denominational accreditation body..."></textarea>
+    </div>
+    <div class="field">
+      <label>Languages required for course content</label>
+      <input type="text" data-field="languages" placeholder="e.g. English, French, Portuguese">
+    </div>
+  </div>
+
+  <!-- SECTION 6: Mobile App -->
+  <div class="section-card">
+    <h2><span class="section-num">06</span> Mobile App Integration</h2>
+    <p class="hint">The mobile app already exists — confirms scope of changes needed to align with the Moodle-first architecture.</p>
+
+    <div class="field">
+      <label>Mobile app current status</label>
+      <input type="text" data-field="app_status" value="Already developed — requires updates to app + API to align with Moodle-first architecture">
+    </div>
+    <div class="field">
+      <label>Required app changes</label>
+      <textarea data-field="app_changes" placeholder="e.g. API integration with Moodle, login sync, branding updates..."></textarea>
+    </div>
+  </div>
+
+  <!-- SECTION 7: Timeline & Notes -->
+  <div class="section-card">
+    <h2><span class="section-num">07</span> Timeline &amp; Notes</h2>
+    <p class="hint">Milestone delivery plan, governance notes, or anything else the build team should know.</p>
+
+    <div class="field">
+      <label>Agreed timeline / milestone target</label>
+      <input type="text" data-field="timeline" placeholder="e.g. Phase 1 by [date]">
+    </div>
+    <div class="field">
+      <label>Additional notes</label>
+      <textarea data-field="notes" placeholder="Type anything else the build team should know..." style="min-height:100px;"></textarea>
+    </div>
+  </div>
+
+  <div class="sticky-footer">
+    <button class="btn btn-primary" onclick="generateSummary()">Generate Summary</button>
+    <button class="btn btn-secondary" onclick="copySummary()">Copy Summary</button>
+  </div>
+
+  <div class="copied-flag" id="copiedFlag">✓ Copied — paste this into WhatsApp</div>
+  <div class="output-box" id="outputBox"></div>
+
+</div>
+
+<script>
+const rolesList = [
+  "Bishop / Presiding officer","Coordination office / Admin","Advisory leadership",
+  "Regional church representative","Instructor / Faculty","Student / Trainee"
+];
+const roleGrid = document.getElementById('roleGrid');
+rolesList.forEach((r)=>{
+  const label = document.createElement('label');
+  label.className = 'amenity-chip';
+  label.innerHTML = `<input type="checkbox" data-role="${r}"> ${r}`;
+  roleGrid.appendChild(label);
+});
+roleGrid.addEventListener('change', (e)=>{
+  if(e.target.checked){ e.target.closest('.amenity-chip').classList.add('checked'); }
+  else{ e.target.closest('.amenity-chip').classList.remove('checked'); }
+  updateProgress();
+});
+
+document.querySelectorAll('input[name="lms_approach"]').forEach(radio=>{
+  radio.addEventListener('change', ()=>{
+    document.querySelectorAll('#lmsApproachGroup .radio-chip').forEach(chip=>chip.classList.remove('checked'));
+    radio.closest('.radio-chip').classList.add('checked');
+    updateProgress();
+  });
+});
+document.querySelector('input[name="lms_approach"]:checked').closest('.radio-chip').classList.add('checked');
+
+function updateProgress(){
+  const inputs = document.querySelectorAll('[data-field]');
+  const checkboxes = document.querySelectorAll('[data-role]');
+  let filled = 0, total = 0;
+  inputs.forEach(el=>{
+    total++;
+    if(el.value && el.value.trim() !== '') filled++;
+  });
+  total += 1; // roles counted as one block
+  if([...checkboxes].some(c=>c.checked)) filled++;
+
+  const pct = total ? Math.round((filled/total)*100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = pct + '% complete';
+}
+
+document.querySelectorAll('[data-field]').forEach(el=>{
+  el.addEventListener('input', updateProgress);
+  el.addEventListener('change', updateProgress);
+});
+
+function generateSummary(){
+  const get = (name) => {
+    const el = document.querySelector(`[data-field="${name}"]`);
+    return el && el.value.trim() ? el.value.trim() : '—';
+  };
+
+  const lmsApproach = document.querySelector('input[name="lms_approach"]:checked').value;
+
+  let roles = [];
+  document.querySelectorAll('[data-role]').forEach(c=>{
+    if(c.checked) roles.push(c.dataset.role);
+  });
+
+  const summary =
+`GAMETS — PLATFORM BUILD INTAKE SUMMARY
+Generated: ${new Date().toLocaleDateString()}
+
+01 — INSTITUTIONAL IDENTITY
+Institution: ${get('institution_name')}
+Leadership: ${get('leadership_name')}
+Domain: ${get('domain_name')}
+Motto: ${get('motto')}
+
+02 — SYSTEM ARCHITECTURE
+LMS approach: ${lmsApproach}
+AME platform role: ${get('ame_platform_role')}
+Moodle role: ${get('moodle_role')}
+
+03 — DOMAIN & INSTITUTIONAL EMAIL
+Domain registered: ${get('domain_registered')}
+Required emails: ${get('institutional_emails')}
+DNS/registrar access: ${get('dns_access')}
+
+04 — MOODLE ACCOUNT & ACCESS
+Hosting preference: ${get('moodle_hosting')}
+Admin account: ${get('moodle_admin')}
+User roles: ${roles.length ? roles.join(', ') : '—'}
+
+05 — COURSE & CURRICULUM STRUCTURE
+Initial courses: ${get('initial_courses')}
+Certification requirements: ${get('certification_reqs')}
+Languages: ${get('languages')}
+
+06 — MOBILE APP INTEGRATION
+App status: ${get('app_status')}
+Required changes: ${get('app_changes')}
+
+07 — TIMELINE & NOTES
+Timeline: ${get('timeline')}
+Notes: ${get('notes')}
+`;
+
+  const box = document.getElementById('outputBox');
+  box.textContent = summary;
+  box.classList.add('show');
+  box.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function copySummary(){
+  const box = document.getElementById('outputBox');
+  if(!box.classList.contains('show')){
+    generateSummary();
+  }
+  navigator.clipboard.writeText(box.textContent).then(()=>{
+    const flag = document.getElementById('copiedFlag');
+    flag.classList.add('show');
+    setTimeout(()=>flag.classList.remove('show'), 3000);
+  });
+}
+
+updateProgress();
+</script>
+
+</body>
+</html>
